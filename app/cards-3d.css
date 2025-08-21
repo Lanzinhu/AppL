@@ -1,0 +1,66 @@
+/* ========== VARS ANIM ========== */
+@property --x { syntax: '<number>'; initial-value: 0; inherits: true; }
+@property --y { syntax: '<number>'; initial-value: 0; inherits: true; }
+
+/* ========== LAYOUT DA HOME ========== */
+.main-tilt{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  place-items: center;
+  padding: 48px;
+  min-height: 100dvh;
+  background: linear-gradient(#f6f7f8, #ececec); /* fundo simples e claro p/ debug */
+}
+
+
+/* ========== CARD 3D ========== */
+.card{
+  width: 300px;
+  aspect-ratio: 3 / 4;           /* 300 x 400 */
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  outline: none;      /* DEBUG: borda para ver o card */
+}
+
+.card figure{
+  --radius: 16px;
+  border-radius: var(--radius);
+  overflow: hidden;                   /* recorta cantos do conteúdo */
+  clip-path: inset(0 round var(--radius)); /* força o clip em todos os layers */
+  position: relative;
+  height: 100%;
+  transform: rotateX(calc(var(--x) * 1deg)) rotateY(calc(var(--y) * 1deg));
+  transition: transform .2s ease;
+}
+
+/* brilho leve ao passar o mouse */
+.card figure::after{
+  content:'';
+  position:absolute; inset:0;
+  pointer-events:none;
+  background: radial-gradient(transparent 40%, rgba(195, 0, 255, 0.164));
+  opacity: 0; transition: opacity .2s ease;
+  border-radius: inherit; 
+}
+.card figure:hover::after{ opacity: 1; }
+
+/* imagem */
+.card figure img{
+  width: 100%; height: 100%;
+  object-fit: cover; display:block;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit; 
+}
+
+/* título */
+.card-title{
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  font-weight: 800; letter-spacing:.04em;
+  color:#fff; text-transform:uppercase;
+  text-shadow: 0 8px 24px rgba(0,0,0,.35);
+  pointer-events:none;
+}
+.card-title .card-link{ color:inherit; text-decoration:none; pointer-events:auto; }
